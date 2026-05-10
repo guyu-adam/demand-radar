@@ -34,6 +34,32 @@ bash run.sh
 
 ---
 
+## Demo
+
+```
+$ python demand_radar.py --once
+[V2EX/RSS]  fetching 3 feeds...  47 posts
+[V2EX/DDG]  searching with pay keywords...  12 results
+[GitHub]    searching issues...  3 results
+[filter]    62 total → 8 pass keyword gate → 4 score ≥ 7
+
+$ python demand_radar.py --digest
+
+需求雷达 — 过去24h 摘要   4 条机会
+┏━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┓
+┃ 分   ┃ 来源       ┃ 标题                                     ┃ 估价         ┃
+┡━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━┩
+│  9   │ v2ex/ddg   │ 有偿 Excel多表汇总+自动生成月报           │ 200-600元    │
+│  9   │ v2ex/jobs  │ 付费求 Python 爬取某招聘网简历数据        │ 300-800元    │
+│  7   │ v2ex/all   │ 求大佬帮写脚本批量处理图片重命名          │ 200-500元    │
+│  7   │ github     │ [Bounty $50] add CSV export to dashboard  │ ~350元       │
+└──────┴────────────┴──────────────────────────────────────────┴──────────────┘
+```
+
+Results are stored in `demands.db` (SQLite). Deduplication by URL hash.
+
+---
+
 ## How scoring works
 
 No LLM required. Deterministic keyword tiers:
@@ -54,23 +80,6 @@ Disqualifiers: job listings, résumés, dependency-update bots.
 - **V2EX RSS** — `tab/all`, `tab/tech`, `tab/jobs` feeds
 - **V2EX DuckDuckGo search** — site:v2ex.com with pay keywords (catches posts not in RSS window)
 - **GitHub Issues** — searches for paid bounty issues in key repos
-
----
-
-## Output
-
-```
-需求雷达 — 过去24h 摘要   5 条机会
-
-╭──────┬────────────┬────────────────────────────────────┬──────────────╮
-│ 分   │ 来源       │ 标题                                │ 估价         │
-├──────┼────────────┼────────────────────────────────────┼──────────────┤
-│  9   │ v2ex/ddg   │ 有偿求助：Excel数据清洗+自动报表    │ 200-600元    │
-│  7   │ v2ex/all   │ 求 Python 爬虫帮我抓某网站数据      │ 300-800元    │
-╰──────┴────────────┴────────────────────────────────────┴──────────────╯
-```
-
-Results are stored in `demands.db` (SQLite). Deduplication by URL hash.
 
 ---
 
